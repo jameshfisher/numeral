@@ -28,7 +28,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 
 require 'utils'
-require 'numeral'
 require 'errors'
 require 'decorators'
 

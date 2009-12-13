@@ -1,4 +1,5 @@
 *.pyc
+*.gem
 python/numeral.egg-info
 python/build
 python/dist

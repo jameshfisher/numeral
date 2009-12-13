@@ -26,21 +26,16 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-class Array
-	def sum
-		inject(nil) { |sum,x| sum ? sum+x : x }
-		end
-	end
+require 'rake'
 
-class Numeral
-	TEST_CASES_MAKE = {}
-	FAIL_CASES_MAKE = []
-
-	def self.make(number, ordinal=false)
-		raise NotImplementedError
-		end
-	
-	def self.parse(numeral, ordinal=false)
-		raise NotImplementedError
-		end
-	end
+Gem::Specification.new do |s|
+  s.name = %q{numeral}
+  s.version = "0.0.0"
+  s.date = %q{2009-12-13}
+  s.authors = ["eegg"]
+  s.email = %q{jameshfisher@gmail.com}
+  s.summary = %q{Library providing for the formatting (and unformatting) of world numeral systems}
+  s.homepage = %q{http://wiki.github.com/eegg/numeral}
+  s.description = %q{Library providing for the formatting (and unformatting) of world numeral systems}
+  s.files = FileList['numeral.rb', 'lib/**/*.rb'].to_a
+end

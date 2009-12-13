@@ -1,7 +1,3 @@
-#! /usr/bin/env ruby
-# -*- coding: utf-8 -*-
-
-=begin
 Copyright (c) 2009 James Harrison Fisher <jameshfisher@gmail.com>
 
 Permission is hereby granted, free of charge, to any person
@@ -24,39 +20,3 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
-=end
-
-
-require 'utils'
-require 'numeral'
-require 'errors'
-require 'decorators'
-
-class FrenchText < Numeral
-    require 'indoeuropean_text'
-    extend IndoEuropeanText
-	
-    SPECIAL_CASES = {}
-    
-    ORDINAL_UNITS = []
-    ORDINAL_TENS = []
-    UNITS = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf"]
-    TENS = ["zéro", "dix", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante-dix", "quatre-vingt", "quatre-vingt-dix"]
-    
-    IGNORE_TENS = [7, 9]
-    
-    CUSTOM_HUNDREDS = nil
-    
-    HUNDRED = Noun.new 'cent', 'cents'
-    THOUSAND = Noun.new 'mille'
-    MILLION = Noun.new 'million', 'millions'
-    BILLION = Noun.new 'milliard', 'milliards'
-    
-    MIDDLE_SEPARATOR = ' '
-    END_SEPARATOR = ' '
-    
-    JOINER_UNITS = ['-'] * 20
-    JOINER_UNITS[1] = ' et '
-    
-    end
-        

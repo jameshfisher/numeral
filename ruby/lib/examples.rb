@@ -27,36 +27,3 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 
-require 'utils'
-require 'numeral'
-require 'errors'
-require 'decorators'
-
-class UrnfieldNumeral < Numeral
-	class << self
-		extend NumeralDecorators
-		
-		private
-		GLYPHS = {
-			'/' => 1,
-			"\\" => 5
-			}
-		INVERSE_MAPPING = GLYPHS.invert
-		
-		public
-		
-		def make(number, ordinal=false)
-			fives, ones = Utils.split(number, 5)
-			return INVERSE_MAPPING[1] * ones + INVERSE_MAPPING[5] * fives
-			end
-		deny_large(:make, 20)
-		deny(:make, :float, :complex, :negative, :zero)
-		
-		def parse(numeral, ordinal=false)
-			numeral.split("").map { |glyph| GLYPHS[glyph] }.sum
-			end
-		inversion_test(:parse)
-		deny_glyphs(:parse, GLYPHS.keys)
-		
-		end
-	end

@@ -28,11 +28,11 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 
 require 'utils'
-require 'numeral'
+require 'numeral_base'
 require 'errors'
 require 'decorators'
 
-class SpanishText < IndoEuropeanText
+class SpanishText < NumeralBase
 	class << self
 		extend NumeralDecorators
         

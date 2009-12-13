@@ -26,58 +26,37 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
+
 require 'utils'
-require 'numeral'
+require 'numeral_base'
 require 'errors'
 require 'decorators'
 
-class RomanNumeral < Numeral
+class UrnfieldNumeral < NumeralBase
 	class << self
 		extend NumeralDecorators
 		
-		CHARS = {
-			'M'=> 1000,
-			'D'=> 500,
-			'C'=> 100,
-			'L'=> 50,
-			'X'=> 10,
-			'V'=> 5,
-			'I'=> 1
+		private
+		GLYPHS = {
+			'/' => 1,
+			"\\" => 5
 			}
+		INVERSE_MAPPING = GLYPHS.invert
+		
+		public
 		
 		def make(number, ordinal=false)
-			# Note that roman ordinal numbers are represented in the same way as cardinal.
-			return 'nulla' if number == 0
-			
-			thousands, hundreds, tens, ones = Utils.hierarchicize(number, [1000,100,10,1])
-			return 'M' * thousands +
-				['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM'][hundreds] +
-				['', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC'][tens] +
-				['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'][ones]
+			fives, ones = Utils.split(number, 5)
+			return INVERSE_MAPPING[1] * ones + INVERSE_MAPPING[5] * fives
 			end
-		deny_large(:make, 1000000)	# This is a bit hazy.
-		deny(:make, :float, :complex, :negative)
+		deny_large(:make, 20)
+		deny(:make, :float, :complex, :negative, :zero)
 		
 		def parse(numeral, ordinal=false)
-			
-			return 0 if numeral == 'NULLA'
-			
-			n = 0
-			(0..numeral.length-1).each do |i|
-				glyph = numeral[i]
-				val = CHARS[glyph]
-				next_val = CHARS[numeral[i+1]]
-				if next_val != nil and val < next_val
-					n -= val
-				else
-					n += val
-					end
-				end
-			
-			return n
+			numeral.split("").map { |glyph| GLYPHS[glyph] }.sum
 			end
 		inversion_test(:parse)
-		deny_glyphs(:parse, CHARS.keys + 'nulla'.split(""))
+		deny_glyphs(:parse, GLYPHS.keys)
 		
 		end
 	end

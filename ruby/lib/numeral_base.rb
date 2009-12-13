@@ -26,7 +26,21 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-class Coding < Hash
-    end
+class Array
+	def sum
+		inject(nil) { |sum,x| sum ? sum+x : x }
+		end
+	end
 
-codings = Coding.new
+class NumeralBase
+	TEST_CASES_MAKE = {}
+	FAIL_CASES_MAKE = []
+
+	def self.make(number, ordinal=false)
+		raise NotImplementedError
+		end
+	
+	def self.parse(numeral, ordinal=false)
+		raise NotImplementedError
+		end
+	end

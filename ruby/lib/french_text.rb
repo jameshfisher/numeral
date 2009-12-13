@@ -28,31 +28,35 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 
 require 'utils'
+require 'numeral_base'
 require 'errors'
 require 'decorators'
 
-require 'numeral'
-class EnglishText < Numeral
+class FrenchText < NumeralBase
     require 'indoeuropean_text'
     extend IndoEuropeanText
-    
+	
     SPECIAL_CASES = {}
     
-    ORDINAL_UNITS = ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth']
-    ORDINAL_TENS = ['zeroth', 'tenth', 'twentieth', 'thirtieth', 'fourtieth', 'fiftieth', 'sixtieth', 'seventieth', 'eightieth', 'ninetieth']
-    UNITS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"]
-    TENS = ["zero", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
+    ORDINAL_UNITS = []
+    ORDINAL_TENS = []
+    UNITS = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf"]
+    TENS = ["zéro", "dix", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante-dix", "quatre-vingt", "quatre-vingt-dix"]
+    
+    IGNORE_TENS = [7, 9]
     
     CUSTOM_HUNDREDS = nil
-    IGNORE_TENS = nil
     
-    HUNDRED = Noun.new 'hundred'
-    THOUSAND = Noun.new 'thousand'
-    MILLION = Noun.new 'million'
-    BILLION = Noun.new 'billion'
+    HUNDRED = Noun.new 'cent', 'cents'
+    THOUSAND = Noun.new 'mille'
+    MILLION = Noun.new 'million', 'millions'
+    BILLION = Noun.new 'milliard', 'milliards'
     
-    MIDDLE_SEPARATOR = ', '
-    END_SEPARATOR = ' and '
+    MIDDLE_SEPARATOR = ' '
+    END_SEPARATOR = ' '
     
-    JOINER_UNITS = ['-'] * 10
+    JOINER_UNITS = ['-'] * 20
+    JOINER_UNITS[1] = ' et '
+    
     end
+        
