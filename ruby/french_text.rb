@@ -27,35 +27,36 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 
-module TestNumeral
-	def test_parse
-		@test_cases.each { |number, numeral|
-			
-			# I'm not sure all of the following are really positively necessary...
-			#parsed = @numeral_class.parse(numeral)
-			made = @numeral_class.make(number)
-			
-			#assert_equal parsed, number
-			assert_equal made, numeral
-			
-			#reparsed = @numeral_class.parse(made)
-			#remade = @numeral_class.make(parsed)
-			
-			#assert_equal reparsed, number
-			#assert_equal remade, numeral
-			}
-		end
+require 'utils'
+require 'numeral'
+require 'errors'
+require 'decorators'
 
-	def test_fail_parse
-		@parse_fails.each { |nonsense, error|
-			assert_raise(error) { @numeral_class.parse(nonsense) }
-			}
-		end
+class FrenchText < Numeral
+    require 'indoeuropean_text'
+    extend IndoEuropeanText
 	
-	def test_fail_make
-		@make_fails.each { |nonsense, error|
-			assert_raise(error) { @numeral_class.make(nonsense) }
-			}
-		end
-	
-	end
+    SPECIAL_CASES = {}
+    
+    ORDINAL_UNITS = []
+    ORDINAL_TENS = []
+    UNITS = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf"]
+    TENS = ["zéro", "dix", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante-dix", "quatre-vingt", "quatre-vingt-dix"]
+    
+    IGNORE_TENS = [7, 9]
+    
+    CUSTOM_HUNDREDS = nil
+    
+    HUNDRED = Noun.new 'cent', 'cents'
+    THOUSAND = Noun.new 'mille'
+    MILLION = Noun.new 'million', 'millions'
+    BILLION = Noun.new 'milliard', 'milliards'
+    
+    MIDDLE_SEPARATOR = ' '
+    END_SEPARATOR = ' '
+    
+    JOINER_UNITS = ['-'] * 20
+    JOINER_UNITS[1] = ' et '
+    
+    end
+        

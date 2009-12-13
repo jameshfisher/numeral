@@ -26,7 +26,6 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-
 require 'utils'
 require 'numeral'
 require 'errors'
@@ -79,36 +78,6 @@ class RomanNumeral < Numeral
 			end
 		inversion_test(:parse)
 		deny_glyphs(:parse, CHARS.keys + 'nulla'.split(""))
-		
-		end
-	end
-
-if __FILE__ == $0
-	require 'test/unit'
-	class TestRomanNumeral < Test::Unit::TestCase
-		require 'test_numeral'
-		include TestNumeral
-		
-		def setup
-			@numeral_class = RomanNumeral
-			
-			@test_cases = [
-				[1, 'I'],
-				[1000, 'M'],
-				[99, 'XCIX'],
-				[2009, 'MMIX'],
-				]
-			
-			@parse_fails = [
-				['ABC', UnknownGlyphError],
-				['XMX', FailedInversionTestError],
-				['IIII', FailedInversionTestError]
-				]
-			
-			@make_fails = [
-				[-1, NumberIsNegativeError]
-				]
-			end
 		
 		end
 	end

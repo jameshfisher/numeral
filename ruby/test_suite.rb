@@ -26,36 +26,9 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
+require 'tc_utils'
+require 'tc_roman_numeral'
+require 'tc_urnfield_numeral'
+require 'tc_english_text'
+require 'tc_french_text'
 
-module TestNumeral
-	def test_parse
-		@test_cases.each { |number, numeral|
-			
-			# I'm not sure all of the following are really positively necessary...
-			#parsed = @numeral_class.parse(numeral)
-			made = @numeral_class.make(number)
-			
-			#assert_equal parsed, number
-			assert_equal made, numeral
-			
-			#reparsed = @numeral_class.parse(made)
-			#remade = @numeral_class.make(parsed)
-			
-			#assert_equal reparsed, number
-			#assert_equal remade, numeral
-			}
-		end
-
-	def test_fail_parse
-		@parse_fails.each { |nonsense, error|
-			assert_raise(error) { @numeral_class.parse(nonsense) }
-			}
-		end
-	
-	def test_fail_make
-		@make_fails.each { |nonsense, error|
-			assert_raise(error) { @numeral_class.make(nonsense) }
-			}
-		end
-	
-	end

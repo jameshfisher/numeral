@@ -26,36 +26,36 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
+require 'test/unit'
+class TC_EnglishText < Test::Unit::TestCase
+    require 'test_numeral'
+    include TestNumeral
+    
+    def setup
+        require 'english_text'
+        @numeral_class = EnglishText
+        
+        @test_cases = [
+            [0, 'zero'],
+            [1, 'one'],
+            [9, 'nine'],
+            [10, 'ten'],
+            [13, 'thirteen'],
+            [20, 'twenty'],
+            [21, 'twenty-one'],
+            [100, 'one hundred'],
+            [101, 'one hundred and one'],
+            [500_000, 'five hundred thousand']
+            ]
+        
+        @parse_fails = [
+            ['one', NotImplementedError]
+            ]
+        
+        @make_fails = [
+            [-1, NumberIsNegativeError]
+            ]
+        end
+    
+    end
 
-module TestNumeral
-	def test_parse
-		@test_cases.each { |number, numeral|
-			
-			# I'm not sure all of the following are really positively necessary...
-			#parsed = @numeral_class.parse(numeral)
-			made = @numeral_class.make(number)
-			
-			#assert_equal parsed, number
-			assert_equal made, numeral
-			
-			#reparsed = @numeral_class.parse(made)
-			#remade = @numeral_class.make(parsed)
-			
-			#assert_equal reparsed, number
-			#assert_equal remade, numeral
-			}
-		end
-
-	def test_fail_parse
-		@parse_fails.each { |nonsense, error|
-			assert_raise(error) { @numeral_class.parse(nonsense) }
-			}
-		end
-	
-	def test_fail_make
-		@make_fails.each { |nonsense, error|
-			assert_raise(error) { @numeral_class.make(nonsense) }
-			}
-		end
-	
-	end

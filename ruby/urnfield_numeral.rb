@@ -27,35 +27,36 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 
-module TestNumeral
-	def test_parse
-		@test_cases.each { |number, numeral|
-			
-			# I'm not sure all of the following are really positively necessary...
-			#parsed = @numeral_class.parse(numeral)
-			made = @numeral_class.make(number)
-			
-			#assert_equal parsed, number
-			assert_equal made, numeral
-			
-			#reparsed = @numeral_class.parse(made)
-			#remade = @numeral_class.make(parsed)
-			
-			#assert_equal reparsed, number
-			#assert_equal remade, numeral
-			}
-		end
+require 'utils'
+require 'numeral'
+require 'errors'
+require 'decorators'
 
-	def test_fail_parse
-		@parse_fails.each { |nonsense, error|
-			assert_raise(error) { @numeral_class.parse(nonsense) }
+class UrnfieldNumeral < Numeral
+	class << self
+		extend NumeralDecorators
+		
+		private
+		GLYPHS = {
+			'/' => 1,
+			"\\" => 5
 			}
+		INVERSE_MAPPING = GLYPHS.invert
+		
+		public
+		
+		def make(number, ordinal=false)
+			fives, ones = Utils.split(number, 5)
+			return INVERSE_MAPPING[1] * ones + INVERSE_MAPPING[5] * fives
+			end
+		deny_large(:make, 20)
+		deny(:make, :float, :complex, :negative, :zero)
+		
+		def parse(numeral, ordinal=false)
+			numeral.split("").map { |glyph| GLYPHS[glyph] }.sum
+			end
+		inversion_test(:parse)
+		deny_glyphs(:parse, GLYPHS.keys)
+		
 		end
-	
-	def test_fail_make
-		@make_fails.each { |nonsense, error|
-			assert_raise(error) { @numeral_class.make(nonsense) }
-			}
-		end
-	
 	end

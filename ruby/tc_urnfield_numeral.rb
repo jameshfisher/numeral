@@ -26,44 +26,29 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 
-require 'utils'
-
 require 'test/unit'
-
-class UtilsTest < Test::Unit::TestCase
-
-	def test_int_to_base_array
-		[
-			[	[255,10],		[2,5,5]				],
-			[	[256,10],		[2,5,6]				],
-			[	[255,2],		[1,1,1,1,1,1,1,1]	],
-		].each do |test|
-			assert_equal Utils.int_to_base_array(*test[0]), test[1] 
-			end
-		end
-
-
-	def test_split
-		[
-			[	[1,1],			[1,0]		],
-			[	[10,1],			[10,0]		],
-			[	[0,1],			[0,0]		],
-			[	[1.5,0.5],		[3,0]		],
-			[	[1.5,1],		[1,0.5]		],
-			[	[15,10],		[1,5]		],
-		].each do |test|
-			assert_equal Utils.split(*test[0]), test[1]
-			end
-		end
-
-	def test_hierarchicize
-		[
-			[	[100,[1]],			[100]		],
-			[	[100,[1,1]],		[100,0]		],
-			[	[100,[100,1]],		[1,0]		],
-			[	[1000,[360,12]],	[2,23]		],
-		].each do |test|
-			assert_equal Utils.hierarchicize(*test[0]), test[1]
-			end
-		end
-	end
+class TC_UrnfieldNumeral < Test::Unit::TestCase
+    require 'test_numeral'
+    include TestNumeral
+    
+    def setup
+        require 'urnfield_numeral'
+        @numeral_class = UrnfieldNumeral
+        
+        @test_cases = [
+            [4, "////"],
+            [9, "////\\"],
+            ]
+        
+        @parse_fails = [
+            ['ABC', UnknownGlyphError],
+            ['\\//', FailedInversionTestError],
+            ['/////', FailedInversionTestError]
+            ]
+        
+        @make_fails = [
+            [-1, NumberIsNegativeError],
+            [21, NumberIsTooLargeError]
+            ]
+        end
+    end
